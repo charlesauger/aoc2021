@@ -9,5 +9,6 @@ fn main() {
     // day_1_part_1();
     // day_1_part_2();
 
-    day_2_part_1();
+    // day_2_part_1();
+    day_2_part_2();
 }
