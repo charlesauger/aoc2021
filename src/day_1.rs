@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-use crate::helpers::*;
+use crate::helpers::read_lines;
 
 pub fn day_1_part_1() {
     let mut previous = 0;
