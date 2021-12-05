@@ -23,6 +23,10 @@ impl Line {
     fn vertical(&self) -> bool {
         self.pos1.y == self.pos2.y
     }
+
+    fn diagonal(&self) -> bool {
+        (self.pos1.x - self.pos2.x).abs() == (self.pos1.y - self.pos2.y).abs()
+    }
 }
 
 #[derive(Debug)]
@@ -32,6 +36,7 @@ struct Board {
 
 impl Board {
     fn add_line(&mut self, line: Line) {
+        // println!("Adding line {:?}", line);
         if line.horizontal() {
             let x = line.pos1.x;
             let mut range_start = line.pos1.y;
@@ -42,9 +47,11 @@ impl Board {
             for y in range_start..=range_end {
                 match self.board.get(&(x,y)) {
                     Some(&value) => {
+                        // println!("Inserting {},{}={}", x, y, value + 1);
                         self.board.insert((x,y), value + 1)
                     },
                     _ => {
+                        // println!("Inserting {},{}={}", x, y, 1);
                         self.board.insert((x,y), 1)
                     },
                 };
@@ -59,9 +66,41 @@ impl Board {
             for x in range_start..=range_end {
                 match self.board.get(&(x,y)) {
                     Some(&value) => {
+                        // println!("Inserting {},{}={}", x, y, value + 1);
                         self.board.insert((x,y), value + 1)
                     },
                     _ => {
+                        // println!("Inserting {},{}={}", x, y, 1);
+                        self.board.insert((x,y), 1)
+                    },
+                };
+            }
+        } else {
+            let x_range_start = line.pos1.x;
+            let x_range_end = line.pos2.x;
+
+            let y_range_start = line.pos1.y;
+            let y_range_end = line.pos2.y;
+
+            let reverse_x = x_range_start > x_range_end;
+            let reverse_y = y_range_start > y_range_end;
+
+            for i in 0..=(x_range_end-x_range_start).abs() {
+                let x = match reverse_x {
+                    false => x_range_start + i,
+                    true => x_range_start - i,
+                };
+                let y = match reverse_y {
+                    false => y_range_start + i,
+                    true => y_range_start - i,
+                };
+                match self.board.get(&(x, y)) {
+                    Some(&value) => {
+                        // println!("Inserting {},{}={}", x, y, value + 1);
+                        self.board.insert((x,y), value + 1)
+                    },
+                    _ => {
+                        // println!("Inserting {},{}={}", x, y, 1);
                         self.board.insert((x,y), 1)
                     },
                 };
@@ -72,7 +111,7 @@ impl Board {
     fn draw(&self) {
         for x in 0..10 {
             for y in 0..10 {
-                match self.board.get(&(x,y)) {
+                match self.board.get(&(y,x)) {
                     Some(&value) => print!("{} ", value),
                     _ => print!("{} ", 0),
                 }
@@ -111,7 +150,7 @@ pub fn day_5_part_1() {
             };
 
             // For part 1 only use horizontal or vertical lines
-            if line.horizontal() || line.vertical() {
+            if line.horizontal() || line.vertical() || line.diagonal() {
                 // println!("Line is being added to lines: {:?}", line);
                 lines.push(line);
             }
