@@ -28,5 +28,6 @@ fn main() {
 
     // day_5_part_1();
 
-    day_6_part_1();
+    // day_6_part_1();
+    day_6_part_2();
 }
