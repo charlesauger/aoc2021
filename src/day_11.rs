@@ -48,6 +48,96 @@ pub fn day_11_part_1() {
                 }
             }
 
+
+
+            for x in 0..10 {
+                for y in 0..10 {
+                    if flashed[x][y] {
+                        flash_count += 1;
+
+                        energy[x][y] = 0;
+                        flashed[x][y] = false;
+                    }
+                }
+            }
+
+            for x in 0..10 {
+                for y in 0..10 {
+                    print!("{}", energy[x][y]);
+                }
+                println!();
+            }
+
+            println!("-------------");
+            println!("-------------");
+            println!("-------------");
+        }
+
+        println!("Flash count: {}", flash_count);
+
+    }
+
+}
+
+pub fn day_11_part_2() {
+    if let Ok(file_lines) = read_lines("resources/day_11.txt") {
+
+        let mut energy: [[usize; 10]; 10] = [[0; 10]; 10];
+        let mut flashed: [[bool; 10]; 10] = [[false; 10]; 10];
+
+        let mut y = 0;
+        for file_line in file_lines {
+            let line = file_line.unwrap();
+
+            let mut x = 0;
+            for c in line.chars() {
+                energy[y][x] = c.to_digit(10).unwrap() as usize;
+                
+                x += 1;
+            }
+
+            y += 1;
+        }
+
+        for x in 0..10 {
+            for y in 0..10 {
+                print!("{}", energy[x][y]);
+            }
+            println!();
+        }
+        println!("-------------");
+        println!("-------------");
+        println!("-------------");
+
+        let mut flash_count = 0;
+
+        // Perform 100 steps
+        for i in 0..1000 {
+            for x in 0..10 {
+                for y in 0..10 {
+                    energy[x][y] += 1;
+                }
+            }
+
+            for x in 0..10 {
+                for y in 0..10 {
+                    if energy[x][y] > 9 && !flashed[x][y] {
+                        flash_position(x, y, &mut energy, &mut flashed);
+                    }
+                }
+            }
+
+            let mut all_flashed = true;
+            for x in 0..10 {
+                for y in 0..10 {
+                    all_flashed &= flashed[x][y];
+                }
+            }
+            if all_flashed {
+                println!("All flashed on step: {}", i+1);
+                break;
+            }
+
             for x in 0..10 {
                 for y in 0..10 {
                     if flashed[x][y] {
