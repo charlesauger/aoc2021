@@ -37,7 +37,6 @@ pub fn day_13_part_1() {
 
                 dot_set.insert((x_pos, y_pos));
             } else {
-
                 // Fold the array along certain lines
                 let mut first_split = line.split(" ");
                 first_split.next();
@@ -53,27 +52,32 @@ pub fn day_13_part_1() {
                 
                 if side == "x" {
                     let half_width: i32 = curr_width / 2;
-                    // let half_width = position;
                     assert!(position == half_width);
 
                     for dot_pos in &dot_set {
+                        assert!(dot_pos.0 != half_width);
                         if dot_pos.0 > half_width {
-                            let folded_x_pos = (dot_pos.0-(curr_width-1)).abs();
+                            let folded_x_pos = half_width - (dot_pos.0 - half_width);
+
                             to_add.push((folded_x_pos, dot_pos.1));
                             to_remove.push((dot_pos.0, dot_pos.1));
+                        } else if dot_pos.0 == half_width {
+                            to_remove.push((dot_pos.0, dot_pos.1))
                         }
                     }
                     curr_width /= 2;
                 } else if side == "y" {
                     let half_height: i32 = curr_height / 2;
-                    // let half_height = position;
                     assert!(position == half_height);
 
                     for dot_pos in &dot_set {
+                        assert!(dot_pos.1 != half_height);
                         if dot_pos.1 > half_height {
-                            let folded_y_pos = (dot_pos.1-(curr_height-1)).abs();
+                            let folded_y_pos = half_height - (dot_pos.1 - half_height);
                             to_add.push((dot_pos.0, folded_y_pos));
                             to_remove.push((dot_pos.0, dot_pos.1));
+                        } else if dot_pos.1 == half_height {
+                            to_remove.push((dot_pos.0, dot_pos.1))
                         }
                     }
                     curr_height /= 2;
@@ -95,8 +99,8 @@ pub fn day_13_part_1() {
             }
         }
 
-        for i in 0..8 {
-            for j in 0..40 {
+        for i in 0..6 {
+            for j in 0..39 {
                 if dot_set.contains(&(j, i)) {
                     print!("#");
                 } else {
