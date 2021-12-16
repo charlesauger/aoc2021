@@ -16,16 +16,19 @@ pub fn day_16_part_1() {
 
             let mut state = State{ version_sum: 0 };
 
-            read_packet(&binary, &mut state);
+            let result = read_packet(&binary, &mut state);
 
             println!("Sum of all version numbers = {}", state.version_sum);
+            println!("Result of all operators = {}", result.1);
         }
     }
 }
 
-fn read_packet(input: &str, state: &mut State) -> usize {
+fn read_packet(input: &str, state: &mut State) -> (usize, usize) {
     println!("---- Begin reading packet ----");
     println!("Packet binary = {}", input);
+
+    let mut operator_result = 0;
 
     let mut pointer = 0;
     let packet_version_bin = &input[pointer..pointer+3];
@@ -60,8 +63,12 @@ fn read_packet(input: &str, state: &mut State) -> usize {
 
         let packet_value = usize::from_str_radix(&packet_value_bin, 2).unwrap();
         println!("Packet type 4 binary value = {} = {}", packet_value_bin, packet_value);
+
+        operator_result = packet_value;
     } else {
         // Operator packet type
+
+        let mut sub_packet_results = Vec::<usize>::new();
         
         let packet_length_type = &input[pointer..pointer+1];
         pointer += 1;
@@ -79,10 +86,12 @@ fn read_packet(input: &str, state: &mut State) -> usize {
             let mut length_remaining = total_sub_packet_length as usize;
 
             while length_remaining > 0 {
-                let sub_packet_length = read_packet(&input[pointer..pointer+length_remaining], state);
+                let (sub_packet_length, packet_result) = read_packet(&input[pointer..pointer+length_remaining], state);
 
                 pointer += sub_packet_length;
                 length_remaining -= sub_packet_length;
+
+                sub_packet_results.push(packet_result);
             }
 
         } else if packet_length_type == "1" {
@@ -97,20 +106,59 @@ fn read_packet(input: &str, state: &mut State) -> usize {
             let mut sub_packets_remaining = number_of_sub_packets as usize;
 
             while sub_packets_remaining > 0 {
-                let sub_packet_length = read_packet(&input[pointer..], state);
+                let (sub_packet_length, packet_result) = read_packet(&input[pointer..], state);
 
                 pointer += sub_packet_length;
                 sub_packets_remaining -= 1;
+
+                sub_packet_results.push(packet_result);
             }
         } else {
             panic!();
         }
-        
+
+        if packet_type == 0 {
+            // Sum
+            operator_result = sub_packet_results.iter().sum();
+        } else if packet_type == 1 {
+            // Product
+            operator_result = sub_packet_results[0];
+            for i in 1..sub_packet_results.len() {
+                operator_result *= sub_packet_results[i];
+            }
+        } else if packet_type == 2 {
+            // Minimum
+            operator_result = *sub_packet_results.iter().min().unwrap();
+        } else if packet_type == 3 {
+            // Maximum
+            operator_result = *sub_packet_results.iter().max().unwrap();
+        } else if packet_type == 5 {
+            // Greater than
+            if sub_packet_results[0] > sub_packet_results[1] {
+                operator_result = 1;
+            } else {
+                operator_result = 0;
+            }
+        } else if packet_type == 6 {
+            // Less than
+            if sub_packet_results[0] < sub_packet_results[1] {
+                operator_result = 1;
+            } else {
+                operator_result = 0;
+            }
+        } else if packet_type == 7 {
+            // Equal to
+            if sub_packet_results[0] == sub_packet_results[1] {
+                operator_result = 1;
+            } else {
+                operator_result = 0;
+            }
+        }
     }
 
-    println!("---- Ended reading packet with length {} ----", pointer);
+    println!("---- Ended reading packet with length {} and value {} ----", pointer, operator_result);
 
-    pointer
+    (pointer, operator_result)
 }
 
 fn convert_to_binary_from_hex(hex: &str) -> String {
