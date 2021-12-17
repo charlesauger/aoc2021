@@ -14,7 +14,8 @@ mod helpers;
 // mod day_13;
 // mod day_14;
 // mod day_15;
-mod day_16;
+// mod day_16;
+mod day_17;
 
 // use crate::day_1::*;
 // use crate::day_2::*;
@@ -31,7 +32,8 @@ mod day_16;
 // use crate::day_13::*;
 // use crate::day_14::*;
 // use crate::day_15::*;
-use crate::day_16::*;
+// use crate::day_16::*;
+use crate::day_17::*;
 
 fn main() {
     // day_1_part_1();
@@ -77,5 +79,7 @@ fn main() {
     // day_15_part_1();
     // day_15_part_2();
 
-    day_16_part_1();
+    // day_16_part_1();
+
+    day_17_part_1();
 }
