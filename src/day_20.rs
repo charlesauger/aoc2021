@@ -66,7 +66,7 @@ pub fn day_20_part_1() {
     let mut assumed_missing_value = !iea[0];
     let mut flip_missing_value = true;
 
-    for _i in 0..2 {
+    for _i in 0..50 {
         output_pixels = calculate_output_pixels(&input_pixels, &iea, assumed_missing_value);
         input_pixels = output_pixels.clone();
 
@@ -94,7 +94,7 @@ fn calculate_output_pixels(input_pixels: &HashMap<(i64, i64), bool>, iea: &Vec<b
     let boundaries = find_pixel_boundaries(&input_pixels);
     let (leftmost, rightmost, topmost, bottommost) = (boundaries.0, boundaries.1, boundaries.2, boundaries.3);
 
-    println!("boundaries searching = {:?}", boundaries);
+    // println!("boundaries searching = {:?}", boundaries);
     // Calculate pixel at position based on input pixels
     for y in topmost..=bottommost {
         for x in leftmost..=rightmost {
@@ -157,10 +157,10 @@ fn find_pixel_boundaries(pixels: &HashMap<(i64, i64), bool>) -> (i64, i64, i64, 
         }
     }
 
-    println!("leftmost found = {}", leftmost);
-    println!("rightmost found = {}", rightmost);
-    println!("topmost found = {}", topmost);
-    println!("bottommost found = {}", bottommost);
+    // println!("leftmost found = {}", leftmost);
+    // println!("rightmost found = {}", rightmost);
+    // println!("topmost found = {}", topmost);
+    // println!("bottommost found = {}", bottommost);
 
     let modifier = 1;
     (leftmost-modifier, rightmost+modifier, topmost-modifier, bottommost+modifier)
