@@ -1,4 +1,5 @@
 mod helpers;
+mod vec3;
 // mod day_1;
 // mod day_2;
 // mod day_3;
@@ -16,7 +17,9 @@ mod helpers;
 // mod day_15;
 // mod day_16;
 // mod day_17;
-mod day_18;
+// mod day_18;
+// mod day_19;
+mod day_20;
 
 // use crate::day_1::*;
 // use crate::day_2::*;
@@ -35,7 +38,9 @@ mod day_18;
 // use crate::day_15::*;
 // use crate::day_16::*;
 // use crate::day_17::*;
-use crate::day_18::*;
+// use crate::day_18::*;
+// use crate::day_19::*;
+use crate::day_20::*;
 
 fn main() {
     // day_1_part_1();
@@ -86,5 +91,9 @@ fn main() {
     // day_17_part_1();
 
     // day_18_part_1();
-    day_18_part_2();
+    // day_18_part_2();
+    
+    // day_19_part_1();
+    
+    day_20_part_1();
 }
