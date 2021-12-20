@@ -7,7 +7,7 @@ pub fn day_20_part_1() {
 
     let mut input_pixels = HashMap::<(i64, i64), bool>::new();
 
-    if let Ok(file_lines) = read_lines("resources/day_20_test.txt") {
+    if let Ok(file_lines) = read_lines("resources/day_20.txt") {
 
         let mut x = 0;
         let mut y = 0;
@@ -55,11 +55,26 @@ pub fn day_20_part_1() {
 
     // println!("{:?}", input_pixels);
 
-    let mut output_pixels = calculate_output_pixels(&input_pixels, &iea, false);
+    // let mut output_pixels = calculate_output_pixels(&input_pixels, &iea, false);
 
-    input_pixels = output_pixels.clone();
-    output_pixels = calculate_output_pixels(&input_pixels, &iea, false);
+    // input_pixels = output_pixels.clone();
+    // output_pixels = calculate_output_pixels(&input_pixels, &iea, true);
     
+    let mut output_pixels = HashMap::<(i64, i64), bool>::new();
+
+    // The real input data has a fun trick in which all the empty space flips between lit and not lit
+    let mut assumed_missing_value = !iea[0];
+    let mut flip_missing_value = true;
+
+    for _i in 0..2 {
+        output_pixels = calculate_output_pixels(&input_pixels, &iea, assumed_missing_value);
+        input_pixels = output_pixels.clone();
+
+        if flip_missing_value {
+            assumed_missing_value = !assumed_missing_value;
+        }
+    }
+
     draw_image(&output_pixels);
 
     let mut count = 0;
