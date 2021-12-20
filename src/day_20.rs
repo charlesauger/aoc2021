@@ -7,7 +7,7 @@ pub fn day_20_part_1() {
 
     let mut input_pixels = HashMap::<(i64, i64), bool>::new();
 
-    if let Ok(file_lines) = read_lines("resources/day_20.txt") {
+    if let Ok(file_lines) = read_lines("resources/day_20_test.txt") {
 
         let mut x = 0;
         let mut y = 0;
@@ -55,10 +55,10 @@ pub fn day_20_part_1() {
 
     // println!("{:?}", input_pixels);
 
-    let mut output_pixels = calculate_output_pixels(&input_pixels, &iea);
+    let mut output_pixels = calculate_output_pixels(&input_pixels, &iea, false);
 
     input_pixels = output_pixels.clone();
-    output_pixels = calculate_output_pixels(&input_pixels, &iea);
+    output_pixels = calculate_output_pixels(&input_pixels, &iea, false);
     
     draw_image(&output_pixels);
 
@@ -73,15 +73,16 @@ pub fn day_20_part_1() {
 
 }
 
-fn calculate_output_pixels(input_pixels: &HashMap<(i64, i64), bool>, iea: &Vec<bool>) -> HashMap<(i64, i64), bool> {
+fn calculate_output_pixels(input_pixels: &HashMap<(i64, i64), bool>, iea: &Vec<bool>, assumed_missing_value: bool) -> HashMap<(i64, i64), bool> {
     let mut output_pixels = HashMap::<(i64, i64), bool>::new();
 
     let boundaries = find_pixel_boundaries(&input_pixels);
     let (leftmost, rightmost, topmost, bottommost) = (boundaries.0, boundaries.1, boundaries.2, boundaries.3);
 
+    println!("boundaries searching = {:?}", boundaries);
     // Calculate pixel at position based on input pixels
-    for y in topmost..bottommost {
-        for x in leftmost..rightmost {
+    for y in topmost..=bottommost {
+        for x in leftmost..=rightmost {
             let pixels_to_check = [
                 (x-1, y-1), (x, y-1), (x+1, y-1),
                 (x-1, y), (x, y), (x+1, y),
@@ -91,7 +92,11 @@ fn calculate_output_pixels(input_pixels: &HashMap<(i64, i64), bool>, iea: &Vec<b
             let mut binary_string = String::new();
             for px in pixels_to_check {
                 if !input_pixels.contains_key(&(px.0, px.1)) {
-                    binary_string.push('0');
+                    if assumed_missing_value {
+                        binary_string.push('1');
+                    } else {
+                        binary_string.push('0');
+                    }
                 } else {
                     let lit_pixel = input_pixels.get(&(px.0, px.1)).unwrap();
                     if *lit_pixel {
@@ -103,7 +108,7 @@ fn calculate_output_pixels(input_pixels: &HashMap<(i64, i64), bool>, iea: &Vec<b
 
             }
 
-            let binary_index = i64::from_str_radix(binary_string.as_str(), 2).unwrap();
+            let binary_index = usize::from_str_radix(binary_string.as_str(), 2).unwrap();
             // println!("Position ({},{}) - Binary index = {} - insert {}", x, y ,binary_index, iea[binary_index as usize]);
 
             output_pixels.insert((x, y), iea[binary_index as usize]);
@@ -137,8 +142,12 @@ fn find_pixel_boundaries(pixels: &HashMap<(i64, i64), bool>) -> (i64, i64, i64, 
         }
     }
 
-    let modifier = 1;
+    println!("leftmost found = {}", leftmost);
+    println!("rightmost found = {}", rightmost);
+    println!("topmost found = {}", topmost);
+    println!("bottommost found = {}", bottommost);
 
+    let modifier = 1;
     (leftmost-modifier, rightmost+modifier, topmost-modifier, bottommost+modifier)
 }
 
@@ -146,8 +155,15 @@ fn draw_image(pixels: &HashMap<(i64, i64), bool>) {
     let boundaries = find_pixel_boundaries(&pixels);
     let (leftmost, rightmost, topmost, bottommost) = (boundaries.0, boundaries.1, boundaries.2, boundaries.3);
 
-    for y in topmost..bottommost {
-        for x in leftmost..rightmost {
+    // for x in leftmost..bottommost {
+    //     print!("{}", x);
+    // }
+    // println!();
+    // println!();
+
+    for y in topmost..=bottommost {
+        // print!("{} ", y);
+        for x in leftmost..=rightmost {
             if !pixels.contains_key(&(x, y)) {
                 print!(".");
             } else {
