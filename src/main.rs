@@ -99,5 +99,6 @@ fn main() {
     
     // day_20_part_1();
 
-    day_21_part_1();
+    // day_21_part_1();
+    day_21_part_2();
 }
