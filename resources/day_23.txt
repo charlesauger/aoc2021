@@ -1,0 +1,42 @@
+ 12345678901
+#############
+#...........#
+###A#D#b#d###
+  #B#C#a#c#
+  #########
+
+Once in the hallway you can't move again unless moving into a room
+b -> 7, 6, 5, 4, 3, 2, 1 = 70 energy
+a -> r31 -> 7, 6, 5, 4, 3, 2, 2 = 7 energy
+d -> 9, 10 = 2000 energy
+c -> r41 -> 9, 8, 7 -> r31 -> r32 = 600 energy
+d -> 9 -> r41 -> r42 = 3000 energy
+D -> 5, 6, 7, 8, 9 -> r41 = 6000 energy
+C -> r21 -> 5, 6, 7 -> r31 = 500 energy
+A -> 3, 4, 5, 6 = 4 energy
+B -> r11 -> 3, 4, 5 -> r21 -> r22 = 60 energy
+a -> 3 -> r11 -> r12 = 3 energy
+b -> 2, 3, 4, 5 -> r21 = 50 energy
+A -> 5, 4, 3 -> r11 = 4 energy
+
+= 12291 energy
+
+
+
+b -> 7, 8 = 20 energy
+a -> r31 -> 7, 6, 5, 4, 3, 2, 1 = 8 energy
+d -> 9, 10 = 2000 energy
+c -> r41 -> 9, 8, 7 -> r31 -> r32 = 600 energy
+d -> 9 -> r41 -> r42 = 3000 energy
+b -> 7, 6, 5, 4 = 40 energy
+D -> 5, 6, 7, 8, 9 -> r41 = 6000 energy
+C -> r21 -> 5, 6, 7 -> r31 = 500 energy
+b -> 5 -> r21 -> r22 = 30 energy
+A -> 3, 2 = 2 energy
+B -> r11 -> 3, 4, 5 -> r21 = 50 energy
+A -> 3 -> r11 -> r12 = 3 energy
+a -> 2, 3, r11 = 3 energy
+
+= 12256 energy
+
+
