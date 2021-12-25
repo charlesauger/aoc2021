@@ -47,15 +47,23 @@ def encode_state(amps):
     hallway_position_1 = "."
     hallway_position_2_1 = "."
     hallway_position_2_2 = "."
+    hallway_position_2_3 = "."
+    hallway_position_2_4 = "."
     hallway_position_3 = "."
     hallway_position_4_1 = "."
     hallway_position_4_2 = "."
+    hallway_position_4_3 = "."
+    hallway_position_4_4 = "."
     hallway_position_5 = "."
     hallway_position_6_1 = "."
     hallway_position_6_2 = "."
+    hallway_position_6_3 = "."
+    hallway_position_6_4 = "."
     hallway_position_7 = "."
     hallway_position_8_1 = "."
     hallway_position_8_2 = "."
+    hallway_position_8_3 = "."
+    hallway_position_8_4 = "."
     hallway_position_9 = "."
     hallway_position_10 = "."
 
@@ -70,6 +78,10 @@ def encode_state(amps):
                 hallway_position_2_1 = character
             elif amp.depth == 2:
                 hallway_position_2_2 = character
+            if amp.depth == 3:
+                hallway_position_2_3 = character
+            elif amp.depth == 4:
+                hallway_position_2_4 = character
         elif amp.position == 3:
             hallway_position_3 = character
         elif amp.position == 4:
@@ -77,6 +89,10 @@ def encode_state(amps):
                 hallway_position_4_1 = character
             elif amp.depth == 2:
                 hallway_position_4_2 = character
+            if amp.depth == 3:
+                hallway_position_4_3 = character
+            elif amp.depth == 4:
+                hallway_position_4_4 = character
         elif amp.position == 5:
             hallway_position_5 = character
         elif amp.position == 6:
@@ -84,6 +100,10 @@ def encode_state(amps):
                 hallway_position_6_1 = character
             elif amp.depth == 2:
                 hallway_position_6_2 = character
+            if amp.depth == 3:
+                hallway_position_6_3 = character
+            elif amp.depth == 4:
+                hallway_position_6_4 = character
         elif amp.position == 7:
             hallway_position_7 = character
         elif amp.position == 8:
@@ -91,12 +111,16 @@ def encode_state(amps):
                 hallway_position_8_1 = character
             elif amp.depth == 2:
                 hallway_position_8_2 = character
+            if amp.depth == 3:
+                hallway_position_8_3 = character
+            elif amp.depth == 4:
+                hallway_position_8_4 = character
         elif amp.position == 9:
             hallway_position_9 = character
         elif amp.position == 10:
             hallway_position_10 = character
 
-    encoding = hallway_position_0 + hallway_position_1 + hallway_position_2_1 + hallway_position_2_2 + hallway_position_3 + hallway_position_4_1 + hallway_position_4_2 + hallway_position_5 + hallway_position_6_1 + hallway_position_6_2 + hallway_position_7 + hallway_position_8_1 + hallway_position_8_2 + hallway_position_9 + hallway_position_10
+    encoding = hallway_position_0 + hallway_position_1 + hallway_position_2_1 + hallway_position_2_2 + hallway_position_2_3 + hallway_position_2_4 + hallway_position_3 + hallway_position_4_1 + hallway_position_4_2 + hallway_position_4_3 + hallway_position_4_4  + hallway_position_5 + hallway_position_6_1 + hallway_position_6_2 + hallway_position_6_3 + hallway_position_6_4  + hallway_position_7 + hallway_position_8_1 + hallway_position_8_2 + hallway_position_8_3 + hallway_position_8_4 + hallway_position_9 + hallway_position_10
     encoding += str(calculate_total_move_cost(amps))
     return encoding
 
@@ -153,7 +177,7 @@ def find_goal_depth_to_move_into(key, amps):
         return -1
 
     goal_empty = True
-    lowest_goal_position_filled = 3 # Currently can only go to depth 2 so initialise to 1 more
+    lowest_goal_position_filled = 5 # Currently can only go to depth 4 so initialise to 1 more
 
     for other_key, other_amp in amps.items():
         if other_key != key:
@@ -365,13 +389,25 @@ def find_cheapest_cost(amps, depth):
 
 
 amps = {1: Amp(2, 1, 2, 1),
-        2: Amp(2, 2, 4, 10),
-        3: Amp(4, 1, 8, 1000),
-        4: Amp(4, 2, 6, 100),
-        5: Amp(6, 1, 4, 10),
-        6: Amp(6, 2, 2, 1),
-        7: Amp(8, 1, 8, 1000),
-        8: Amp(8, 2, 6, 100)}
+        2: Amp(2, 2, 8, 1000),
+        3: Amp(2, 3, 8, 1000),
+        4: Amp(2, 4, 4, 10),
+
+        5: Amp(4, 1, 8, 1000),
+        6: Amp(4, 2, 6, 100),
+        7: Amp(4, 3, 4, 10),
+        8: Amp(4, 4, 6, 100),
+
+        9: Amp(6, 1, 4, 10),
+        10: Amp(6, 2, 4, 10),
+        11: Amp(6, 3, 2, 1),
+        12: Amp(6, 4, 2, 1),
+
+
+        13: Amp(8, 1, 8, 1000),
+        14: Amp(8, 2, 2, 1),
+        15: Amp(8, 3, 6, 100),
+        16: Amp(8, 4, 6, 100)}
 
 already_searched = []
 cheapest_solved_cost = sys.maxsize
